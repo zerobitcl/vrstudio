@@ -1,0 +1,99 @@
+---
+import Base from "../layouts/Base.astro";
+import { services, site, waLink } from "../data/site";
+---
+
+<Base
+  title="Agendar hora en Ovalle"
+  description="Agenda lash lifting, cejas o limpieza facial en Ovalle por WhatsApp. Victoria Rivera Studio, Valle del Limarí. +56 9 2602 6868."
+>
+  <section class="booking wrap">
+    <div>
+      <p class="kicker">Agenda · {site.city}</p>
+      <h1>Tu hora, <em>en un mensaje.</em></h1>
+      <p class="lead" style="margin-top: 1rem">
+        Completa lo básico y se abre WhatsApp con el texto listo. No guardamos datos en esta página: la conversación sigue en el chat.
+      </p>
+
+      <form class="form" id="agenda-form" style="margin-top: 1.4rem">
+        <label class="field">
+          <span>Nombre</span>
+          <input name="nombre" autocomplete="name" placeholder="Cómo te llamas" />
+        </label>
+        <label class="field">
+          <span>Tratamiento</span>
+          <select name="servicio" required>
+            <option value="">Elige uno</option>
+            {services.map((service) => <option value={service.name}>{service.name}</option>)}
+            <option value="Aún no sé">Aún no sé, quiero orientación</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Día o momento</span>
+          <input name="cuando" placeholder="Ej. jueves en la tarde" />
+        </label>
+        <label class="field">
+          <span>Algo que debamos saber</span>
+          <textarea name="nota" placeholder="Primera vez, embarazo, piel sensible, referencia de mirada…"></textarea>
+        </label>
+        <button class="btn btn--solid" type="submit">Continuar en WhatsApp</button>
+        <p class="form__hint">También puedes escribir directo al {site.phoneDisplay} o llamar.</p>
+      </form>
+    </div>
+
+    <div class="side-notes">
+      <article>
+        <h2>Qué conviene decir</h2>
+        <p>Tratamiento, si es tu primera vez y dos opciones de día. Con eso se confirma más rápido.</p>
+      </article>
+      <article>
+        <h2>Dónde es</h2>
+        <p>En Ovalle, Región de Coquimbo. La dirección exacta llega cuando la hora queda tomada.</p>
+      </article>
+      <article>
+        <h2>Si vienes de otra comuna</h2>
+        <p>Monte Patria, Punitaqui, Combarbalá, Río Hurtado o la costa: dilo en el mensaje para cuadrar el horario.</p>
+      </article>
+      <article>
+        <h2>Contacto directo</h2>
+        <p>
+          <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a><br />
+          <a href={site.instagram} rel="noopener noreferrer" target="_blank">{site.handle}</a>
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ phone: site.phoneE164 }}>
+  const form = document.querySelector("#agenda-form");
+  const params = new URLSearchParams(location.search);
+  const preset = params.get("servicio");
+  const select = form?.querySelector("select");
+
+  if (select && preset) {
+    const option = [...select.options].find((item) => item.value === preset || item.textContent === preset);
+    if (option) select.value = option.value;
+  }
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const nombre = String(data.get("nombre") || "").trim();
+    const servicio = String(data.get("servicio") || "").trim();
+    const cuando = String(data.get("cuando") || "").trim();
+    const nota = String(data.get("nota") || "").trim();
+
+    const lines = [
+      "Hola Victoria, quiero agendar hora en el estudio.",
+      servicio ? `Tratamiento: ${servicio}.` : "",
+      nombre ? `Me llamo ${nombre}.` : "",
+      cuando ? `Me acomoda: ${cuando}.` : "",
+      nota ? nota : "",
+    ].filter(Boolean);
+
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(lines.join(" "))}`;
+    const opened = window.open(url, "_blank", "noopener,noreferrer");
+    if (!opened) location.href = url;
+  });
+</script>

@@ -1,0 +1,19 @@
+---
+import { inlineSegments } from "../lib/inline";
+
+interface Props {
+  text: string;
+}
+
+const parts = inlineSegments(Astro.props.text);
+---
+
+{
+  parts.map((part) =>
+    part.type === "text" ? (
+      part.value
+    ) : (
+      <a href={part.href}>{part.label}</a>
+    ),
+  )
+}

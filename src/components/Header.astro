@@ -1,0 +1,88 @@
+---
+import { site, waLink, defaultWa } from "../data/site";
+
+interface Props {
+  pathname: string;
+  waMessage?: string;
+}
+
+const { pathname, waMessage = defaultWa } = Astro.props;
+
+const links = [
+  { href: "/servicios/", label: "Tratamientos" },
+  { href: "/agenda/", label: "Agenda" },
+];
+
+function current(href: string) {
+  const path = pathname.replace(/\/$/, "") || "/";
+  const target = href.replace(/\/$/, "") || "/";
+  if (target === "/servicios") return path === "/servicios" || path.startsWith("/servicios/");
+  return path === target;
+}
+---
+
+<header class="header">
+  <div class="wrap header__inner">
+    <a class="brand" href="/" aria-label="Victoria Rivera Studio, inicio">
+      <span class="mark mark--sm" aria-hidden="true"><span class="mark__vr">VR</span></span>
+      <span>
+        <span class="brand__name">Victoria Rivera</span>
+        <span class="brand__meta">Studio · Ovalle</span>
+      </span>
+    </a>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-nav-toggle>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav__panel" id="menu" data-nav>
+      <ul class="nav__links">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} aria-current={current(link.href) ? "page" : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="header__phone" href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      <a class="btn btn--solid header__cta" href={waLink(waMessage)}>Agendar hora</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector("[data-nav-toggle]");
+  const panel = document.querySelector("[data-nav]");
+
+  const main = document.querySelector("main");
+  const footer = document.querySelector("footer");
+  const dock = document.querySelector(".dock");
+
+  function setOpen(open: boolean) {
+    panel?.classList.toggle("is-open", open);
+    button?.setAttribute("aria-expanded", open ? "true" : "false");
+    button?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    document.body.classList.toggle("nav-open", open);
+    main?.toggleAttribute("inert", open);
+    footer?.toggleAttribute("inert", open);
+    dock?.toggleAttribute("inert", open);
+  }
+
+  button?.addEventListener("click", () => {
+    const open = button.getAttribute("aria-expanded") !== "true";
+    setOpen(open);
+    if (open) panel?.querySelector("a")?.focus();
+  });
+
+  panel?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+</script>

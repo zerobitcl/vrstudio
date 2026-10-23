@@ -1,0 +1,53 @@
+---
+import Base from "../../layouts/Base.astro";
+import { services, site } from "../../data/site";
+
+const mirada = services.filter((service) => service.group === "mirada");
+const piel = services.filter((service) => service.group === "piel");
+---
+
+<Base
+  title="Tratamientos de mirada y piel en Ovalle"
+  description="Lash lifting, laminado de cejas, anime lashes, diseño de cejas, limpieza y rejuvenecimiento facial en Ovalle. Victoria Rivera Studio."
+>
+  <section class="service-hero wrap">
+    <div>
+      <p class="kicker">Tratamientos · {site.city}</p>
+      <h1>Mirada y piel <em>en el estudio</em></h1>
+      <p class="lead">
+        Seis tratamientos, dos familias. Elige el que corresponde a lo que quieres ver en el espejo. Si dudas entre lifting y anime lashes, escríbenos antes.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-bottom: 3rem">
+    <div class="menu">
+      <p class="menu__label">Mirada</p>
+      {
+        mirada.map((service, i) => (
+          <a class="row" href={`/servicios/${service.slug}/`}>
+            <span class="row__i">{String(i + 1).padStart(2, "0")}</span>
+            <span>
+              <span class="row__name">{service.name}</span>
+              <span class="row__desc">{service.menu}</span>
+            </span>
+            <span class="row__go" aria-hidden="true">→</span>
+          </a>
+        ))
+      }
+      <p class="menu__label">Piel</p>
+      {
+        piel.map((service, i) => (
+          <a class="row" href={`/servicios/${service.slug}/`}>
+            <span class="row__i">{String(i + 5).padStart(2, "0")}</span>
+            <span>
+              <span class="row__name">{service.name}</span>
+              <span class="row__desc">{service.menu}</span>
+            </span>
+            <span class="row__go" aria-hidden="true">→</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>

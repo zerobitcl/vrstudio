@@ -1,0 +1,139 @@
+---
+import Base from "../../layouts/Base.astro";
+import Inline from "../../components/Inline.astro";
+import {
+  absoluteUrl,
+  businessId,
+  faqJsonLd,
+  relatedServices,
+  services,
+  site,
+  waLink,
+  type Service,
+} from "../../data/site";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+  }));
+}
+
+const service = services.find((item) => item.slug === Astro.params.slug) as Service;
+const related = relatedServices(service);
+const canonicalPath = `/servicios/${service.slug}/`;
+
+const jsonLd = [
+  {
+    "@type": "Service",
+    name: `${service.name} en Ovalle`,
+    description: service.description,
+    url: absoluteUrl(canonicalPath),
+    areaServed: {
+      "@type": "City",
+      name: "Ovalle, Coquimbo, Chile",
+    },
+    provider: { "@id": businessId },
+  },
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: absoluteUrl("/") },
+      { "@type": "ListItem", position: 2, name: "Tratamientos", item: absoluteUrl("/servicios/") },
+      { "@type": "ListItem", position: 3, name: service.name, item: absoluteUrl(canonicalPath) },
+    ],
+  },
+  faqJsonLd(service.faqs),
+];
+---
+
+<Base title={service.seoTitle} description={service.description} waMessage={service.waText} jsonLd={jsonLd}>
+  <article class="wrap">
+    <header class="service-hero">
+      <div>
+        <nav class="crumb" aria-label="Ruta">
+          <a href="/">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <a href="/servicios/">Tratamientos</a>
+          <span aria-hidden="true">/</span>
+          <span>{service.name}</span>
+        </nav>
+        <p class="kicker">{service.group === "mirada" ? "Mirada" : "Piel"} · {site.city}</p>
+        <h1>{service.h1} <em>{service.h1em}</em></h1>
+        <p class="lead">{service.lead}</p>
+      </div>
+      <aside class="aside">
+        <h2>En la sesión</h2>
+        <ul>
+          {service.includes.map((item) => <li>{item}</li>)}
+        </ul>
+        <a class="btn btn--solid btn--full" href={waLink(service.waText)}>Agendar este tratamiento</a>
+        <p class="hero__note">El valor se confirma por WhatsApp · {site.phoneDisplay}</p>
+      </aside>
+    </header>
+
+    <div class="prose">
+      {
+        service.blocks.map((block) => {
+          if (block.type === "h2") return <h2>{block.text}</h2>;
+          if (block.type === "ul") {
+            return (
+              <ul>
+                {block.items.map((item) => (
+                  <li>
+                    <Inline text={item} />
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+          return (
+            <p>
+              <Inline text={block.text} />
+            </p>
+          );
+        })
+      }
+      <p>
+        La atención es en Ovalle. Si vienes desde Monte Patria, Punitaqui, Combarbalá, Río Hurtado o desde La Serena, la hora se coordina por WhatsApp.
+      </p>
+    </div>
+
+    <section class="section" style="padding-top: 1.5rem" aria-labelledby="faq-servicio">
+      <div class="section__head">
+        <h2 id="faq-servicio">Preguntas <em>de este tratamiento</em></h2>
+      </div>
+      <div class="faq">
+        {
+          service.faqs.map((faq) => (
+            <details>
+              <summary>{faq.q}</summary>
+              <p>{faq.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="related" aria-labelledby="relacionados">
+      <h2 id="relacionados">También en el estudio</h2>
+      {
+        related.map((item) => (
+          <a href={`/servicios/${item.slug}/`}>
+            <span>{item.name}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))
+      }
+    </section>
+  </article>
+
+  <section class="wrap">
+    <div class="closer">
+      <p class="sign">Victoria</p>
+      <p class="kicker">{service.name} · Ovalle</p>
+      <h2>Deja la hora en un mensaje.</h2>
+      <p>Escribe y confirmamos disponibilidad. La dirección del estudio se envía al agendar.</p>
+      <a class="btn btn--light" href={waLink(service.waText)}>Agendar por WhatsApp</a>
+    </div>
+  </section>
+</Base>

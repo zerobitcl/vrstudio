@@ -1,0 +1,274 @@
+---
+import Base from "../layouts/Base.astro";
+import {
+  areas,
+  faqJsonLd,
+  homeFaqs,
+  services,
+  site,
+  waLink,
+  defaultWa,
+} from "../data/site";
+
+const mirada = services.filter((service) => service.group === "mirada");
+const piel = services.filter((service) => service.group === "piel");
+
+const paths = [
+  {
+    title: "Lash lifting",
+    text: "Tu pestaña, más curva. Sin extensiones.",
+    points: ["Efecto natural", "Mirada más abierta", "Retoque según tu ciclo"],
+    href: "/servicios/lash-lifting-ovalle/",
+  },
+  {
+    title: "Anime lashes",
+    text: "Extensiones con volumen y picos definidos.",
+    points: ["Mirada más marcada", "Diseño según tu ojo", "Rellenos periódicos"],
+    href: "/servicios/anime-lashes-ovalle/",
+  },
+  {
+    title: "Laminado de cejas",
+    text: "El vello que ya tienes, ordenado y peinado.",
+    points: ["No es un tatuaje", "Ceja más definida", "Dura varias semanas"],
+    href: "/servicios/laminado-de-cejas-ovalle/",
+  },
+];
+
+const ritual = [
+  {
+    n: "01",
+    title: "Preparar",
+    text: "Cleanser gel extra-suave, exfoliación y vaporozono para abrir el trabajo sin maltratar la piel.",
+  },
+  {
+    n: "02",
+    title: "Purificar",
+    text: "Extracción de impurezas con criterio y alta frecuencia como apoyo de higiene.",
+  },
+  {
+    n: "03",
+    title: "Renovar",
+    text: "Dermabrasión, hidratación y masaje linfático. La piel vuelve luminosa, no irritada.",
+  },
+  {
+    n: "04",
+    title: "Cerrar",
+    text: "Shock vitamínico con dermapen y/o radiofrecuencia, solo si corresponde, y siempre protector solar.",
+  },
+];
+
+let index = 0;
+---
+
+<Base
+  title="Lash lifting y estética facial en Ovalle"
+  description="Lash lifting, laminado de cejas, anime lashes y limpieza facial en Ovalle. Victoria Rivera Studio atiende el Valle del Limarí. Agenda tu hora por WhatsApp."
+  jsonLd={faqJsonLd(homeFaqs)}
+>
+  <section class="hero wrap">
+    <div class="hero__copy">
+      <p class="kicker">Estudio de mirada y piel · Ovalle</p>
+      <h1>Lash lifting y estética facial <em>en Ovalle</em></h1>
+      <p class="lead hero__lead">
+        Laminado de cejas, anime lashes y una limpieza facial con protocolo propio.
+        Técnica de lashista profesional para una mirada más abierta, sin verse recargada.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--solid" href={waLink(defaultWa)}>Agendar hora</a>
+        <a class="btn btn--ghost" href="#tratamientos">Ver tratamientos</a>
+      </div>
+      <p class="hero__note">
+        WhatsApp {site.phoneDisplay} · también desde Monte Patria, Punitaqui y el resto del Limarí.
+        <a href={site.instagram} rel="noopener noreferrer" target="_blank">Ver el trabajo en Instagram</a>
+      </p>
+    </div>
+    <div class="orb" aria-hidden="true">
+      <div class="orb__stage">
+        <div class="orb__ring"></div>
+        <div class="mark mark--lg"><span class="mark__vr">VR</span></div>
+      </div>
+      <p class="mark__name">Victoria Rivera</p>
+      <p class="mark__studio">Studio</p>
+      <div class="chips">
+        <span>Lash lifting</span>
+        <span>Cejas</span>
+        <span>Piel</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Datos del estudio">
+    <div class="facts">
+      <div>
+        <strong>Lashista</strong>
+        <span>Técnica profesional en pestaña y ceja.</span>
+      </div>
+      <div>
+        <strong>Ovalle</strong>
+        <span>Valle del Limarí, Región de Coquimbo.</span>
+      </div>
+      <div>
+        <strong>Protocolo</strong>
+        <span>Limpieza facial en una secuencia clara.</span>
+      </div>
+      <div>
+        <strong>WhatsApp</strong>
+        <span>La hora se confirma en el chat.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="mirada">
+    <div class="section__head">
+      <p class="section__index">01</p>
+      <h2>Elige la mirada <em>que buscas</em></h2>
+      <p>
+        Tres caminos distintos. Si no sabes cuál te favorece, cuéntanos por WhatsApp cómo te gusta verte y te orientamos antes de agendar.
+      </p>
+    </div>
+    <div class="choice">
+      {
+        paths.map((path) => (
+          <article>
+            <h3>{path.title}</h3>
+            <p>{path.text}</p>
+            <ul>
+              {path.points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+            <a class="btn btn--ghost" href={path.href}>
+              Ver {path.title.toLowerCase()}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section wrap" id="tratamientos">
+    <div class="section__head">
+      <p class="section__index">02</p>
+      <h2>Tratamientos <em>del estudio</em></h2>
+      <p>Todo se agenda directo. El valor se confirma por WhatsApp según lo que tu pestaña o tu piel necesiten.</p>
+    </div>
+    <div class="menu">
+      <p class="menu__label">Mirada</p>
+      {
+        mirada.map((service) => {
+          index += 1;
+          const number = String(index).padStart(2, "0");
+          return (
+            <a class="row" href={`/servicios/${service.slug}/`}>
+              <span class="row__i">{number}</span>
+              <span>
+                <span class="row__name">{service.name}</span>
+                <span class="row__desc">{service.menu}</span>
+              </span>
+              <span class="row__go" aria-hidden="true">→</span>
+            </a>
+          );
+        })
+      }
+      <p class="menu__label">Piel</p>
+      {
+        piel.map((service) => {
+          index += 1;
+          const number = String(index).padStart(2, "0");
+          return (
+            <a class="row" href={`/servicios/${service.slug}/`}>
+              <span class="row__i">{number}</span>
+              <span>
+                <span class="row__name">{service.name}</span>
+                <span class="row__desc">{service.menu}</span>
+              </span>
+              <span class="row__go" aria-hidden="true">→</span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="section wrap" id="piel">
+    <div class="section__head">
+      <p class="section__index">03</p>
+      <h2>Limpieza facial, <em>en orden</em></h2>
+      <p>
+        El protocolo que distingue al estudio. No es un menú para armar al azar: cada paso prepara el siguiente. El detalle completo está en la página de
+        <a href="/servicios/limpieza-facial-ovalle/">limpieza facial en Ovalle</a>.
+      </p>
+    </div>
+    <ol class="ritual">
+      {
+        ritual.map((step) => (
+          <li>
+            <span>{step.n}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section wrap" id="limari">
+    <div class="section__head">
+      <p class="section__index">04</p>
+      <h2>Ovalle y el <em>Valle del Limarí</em></h2>
+      <p>
+        La atención es en Ovalle, a unos 90 kilómetros de La Serena. Si vienes desde otra comuna, la hora se deja lista por WhatsApp para que el viaje rinda.
+      </p>
+    </div>
+    <div class="zones">
+      {
+        areas.map((area, i) => (
+          <article class:list={["zone", { "zone--main": i === 0 }]}>
+            <h3>{area.name}</h3>
+            <p>{area.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="ig">
+      <p class="kicker">Instagram</p>
+      <h2>El resultado se ve <em>en el trabajo</em></h2>
+      <p>
+        {site.handle} es donde está la mirada real del estudio: lifting, laminado y anime lashes. Esta página no usa fotos de stock ni reseñas inventadas.
+      </p>
+      <a class="btn btn--ghost" href={site.instagram} rel="noopener noreferrer" target="_blank">Abrir Instagram</a>
+    </div>
+  </section>
+
+  <section class="section wrap" id="preguntas">
+    <div class="section__head">
+      <p class="section__index">05</p>
+      <h2>Preguntas <em>antes de agendar</em></h2>
+    </div>
+    <div class="faq">
+      {
+        homeFaqs.map((faq) => (
+          <details>
+            <summary>{faq.q}</summary>
+            <p>{faq.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="closer">
+      <p class="sign">Victoria</p>
+      <p class="kicker">Ovalle · Valle del Limarí</p>
+      <h2>Agenda tu hora.</h2>
+      <p>
+        Escribe el tratamiento y el día que te acomoda. Respondemos por WhatsApp al {site.phoneDisplay}.
+      </p>
+      <a class="btn btn--light" href={waLink(defaultWa)}>Agendar por WhatsApp</a>
+    </div>
+  </section>
+</Base>

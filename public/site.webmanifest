@@ -1,0 +1,23 @@
+{
+  "name": "Victoria Rivera Studio",
+  "short_name": "VR Studio",
+  "description": "Lash lifting, cejas y estética facial en Ovalle.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f1ea",
+  "theme_color": "#f6f1ea",
+  "lang": "es-CL",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

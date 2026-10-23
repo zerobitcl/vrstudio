@@ -1,0 +1,52 @@
+---
+import { services, site } from "../data/site";
+
+const year = 2026;
+---
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <p class="footer__name">Victoria Rivera<br />Studio</p>
+      <p class="footer__meta">
+        {site.city}, Región de {site.region}<br />
+        <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a><br />
+        <a href={site.instagram} rel="noopener noreferrer" target="_blank">{site.handle}</a>
+      </p>
+    </div>
+    <div>
+      <h2>Mirada</h2>
+      <ul>
+        {
+          services
+            .filter((service) => service.group === "mirada")
+            .map((service) => (
+              <li>
+                <a href={`/servicios/${service.slug}/`}>{service.name}</a>
+              </li>
+            ))
+        }
+      </ul>
+    </div>
+    <div>
+      <h2>Piel</h2>
+      <ul>
+        {
+          services
+            .filter((service) => service.group === "piel")
+            .map((service) => (
+              <li>
+                <a href={`/servicios/${service.slug}/`}>{service.name}</a>
+              </li>
+            ))
+        }
+        <li><a href="/agenda/">Agendar hora</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer__legal">
+    <p>
+      © {year} {site.name}. La dirección en Ovalle se confirma al agendar. Resultados según tu piel y tu pestaña.
+    </p>
+  </div>
+</footer>
