@@ -128,14 +128,21 @@ let index = 0;
       <p class="section__index">02</p>
       <h2>Resultado real <em>del estudio</em></h2>
       <p>
-        Lash lifting coriano en una clienta; brow lamination con diseño y tinte en otra. Fotos reales de Ovalle, no de stock.
+        Lash lifting coriano, brow lamination con diseño y tinte, y epilación hindú. Trabajo real del estudio en Ovalle.
       </p>
     </div>
     <div class="gallery">
       {
         gallery.map((shot) => (
-          <figure>
-            <img src={shot.src} alt={shot.alt} width="720" height="900" loading="lazy" decoding="async" />
+          <figure class:list={[{ "is-compact": shot.size === "compact" }]}>
+            <img
+              src={shot.src}
+              alt={shot.alt}
+              width={shot.size === "compact" ? 480 : 720}
+              height={shot.size === "compact" ? 480 : 900}
+              loading="lazy"
+              decoding="async"
+            />
             <figcaption>{shot.caption}</figcaption>
           </figure>
         ))

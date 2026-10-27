@@ -4,8 +4,8 @@
   "description": "Lash lifting, cejas y estética facial en Ovalle.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f6f1ea",
-  "theme_color": "#f6f1ea",
+  "background_color": "#fff7f4",
+  "theme_color": "#fff7f4",
   "lang": "es-CL",
   "icons": [
     {

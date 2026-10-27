@@ -80,24 +80,35 @@ export const gallery = [
     alt: "Resultado de lash lifting coriano en Ovalle, Victoria Rivera Studio",
     caption: "Lash lifting coriano",
     service: "lash-lifting-ovalle",
+    size: "feature" as const,
   },
   {
     src: "/galeria/lash-lifting-coriano-02.jpg",
     alt: "Mirada con pestaña elevada tras lash lifting coriano en Ovalle",
     caption: "Lash lifting coriano",
     service: "lash-lifting-ovalle",
+    size: "feature" as const,
   },
   {
     src: "/galeria/brow-lamination-diseno-tinte-01.jpg",
     alt: "Brow lamination con diseño de cejas y tinte en Ovalle",
     caption: "Brow lamination + diseño + tinte",
     service: "laminado-de-cejas-ovalle",
+    size: "feature" as const,
   },
   {
     src: "/galeria/brow-lamination-diseno-tinte-02.jpg",
     alt: "Cejas laminadas con diseño y tinte en Victoria Rivera Studio Ovalle",
     caption: "Brow lamination + diseño + tinte",
     service: "laminado-de-cejas-ovalle",
+    size: "feature" as const,
+  },
+  {
+    src: "/galeria/epilacion-hindu-01.jpg",
+    alt: "Sesión de epilación hindú en Victoria Rivera Studio, Ovalle",
+    caption: "Epilación hindú",
+    service: "epilacion-hindu-ovalle",
+    size: "compact" as const,
   },
 ] as const;
 
@@ -542,6 +553,7 @@ export const services: Service[] = [
       "Opciones de rostro, cejas o bozo",
       "Indicaciones post sesión",
     ],
+    image: "/galeria/epilacion-hindu-01.jpg",
     blocks: [
       {
         type: "p",
