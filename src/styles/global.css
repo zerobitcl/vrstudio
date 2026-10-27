@@ -223,41 +223,12 @@ p {
   text-decoration: none;
 }
 
-.mark {
-  display: grid;
-  place-items: center;
+.brand__mark {
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.7), transparent 42%),
-    radial-gradient(circle at 62% 70%, #e7b5a4, #f3d2c4 55%, #f7e4da);
-  box-shadow: inset 0 0 0 1px rgba(141, 107, 58, 0.28);
-}
-
-.mark--sm {
-  width: 2.6rem;
-  height: 2.6rem;
-}
-
-.mark--lg {
-  width: min(280px, 72vw);
-  height: min(280px, 72vw);
-}
-
-.mark__vr {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  color: #6f4e24;
-  line-height: 0.8;
-}
-
-.mark--sm .mark__vr {
-  font-size: 1.15rem;
-}
-
-.mark--lg .mark__vr {
-  font-size: clamp(4.4rem, 14vw, 6rem);
+  object-fit: cover;
+  background: #f3d2c4;
 }
 
 .brand__name {
@@ -365,66 +336,124 @@ main {
 
 .orb {
   display: grid;
-  justify-items: center;
+  justify-items: stretch;
+}
+
+.hero__shot,
+.gallery figure,
+.service-shot {
+  margin: 0;
+  overflow: hidden;
+  background: var(--dark);
+}
+
+.hero__shot img,
+.gallery img,
+.service-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.hero__shot figcaption,
+.gallery figcaption {
+  padding: 0.75rem 0.9rem 0.95rem;
+  background: rgba(27, 21, 18, 0.92);
+  color: rgba(246, 241, 234, 0.82);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.gallery {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.priceboard {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
   gap: 1rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
 }
 
-.orb__stage {
-  position: relative;
-  display: grid;
-  place-items: center;
-}
-
-.orb__ring {
-  position: absolute;
-  inset: -8%;
-  border: 1px solid rgba(141, 107, 58, 0.35);
-  border-radius: 50%;
-}
-
-.orb__ring::after {
-  content: "";
-  position: absolute;
-  inset: 8%;
-  border-radius: 50%;
-  border: 1px dashed rgba(141, 107, 58, 0.45);
-}
-
-.mark--lg .mark__caption {
-  display: grid;
-  justify-items: center;
-  margin-top: 0.2rem;
-}
-
-.mark__name {
+.price-row__name {
+  display: block;
   font-family: var(--serif);
-  font-size: 0.95rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.price-row__note {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.price-row__value {
+  flex: none;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.aside__price {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.aside__price span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+}
+
+.aside__prices {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.aside__prices li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.aside__prices strong {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 500;
   color: var(--gold);
 }
 
-.mark__studio {
-  font-size: 0.62rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+.aside__prices em {
   color: var(--muted);
+  font-style: normal;
+  font-size: 0.88rem;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.45rem;
-}
-
-.chips span {
-  padding: 0.35rem 0.7rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(255, 252, 248, 0.7);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
+.closer__logo {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: 0.8rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .facts {
@@ -969,7 +998,7 @@ main {
   }
 
   .hero {
-    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-columns: 1.05fr 0.95fr;
     min-height: calc(100svh - var(--header) - 2rem);
     padding-top: 2rem;
   }
@@ -980,6 +1009,15 @@ main {
 
   .choice {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .priceboard {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 3rem;
   }
 
   .ritual {
@@ -995,7 +1033,7 @@ main {
   }
 
   .footer__grid {
-    grid-template-columns: 1.3fr 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
   }
 
   .service-hero {

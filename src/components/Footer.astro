@@ -1,7 +1,8 @@
 ---
-import { services, site } from "../data/site";
+import { groupLabels, services, site, type ServiceGroup } from "../data/site";
 
 const year = 2026;
+const columns: ServiceGroup[] = ["mirada", "piel", "depilacion"];
 ---
 
 <footer class="footer">
@@ -14,35 +15,32 @@ const year = 2026;
         <a href={site.instagram} rel="noopener noreferrer" target="_blank">{site.handle}</a>
       </p>
     </div>
-    <div>
-      <h2>Mirada</h2>
-      <ul>
-        {
-          services
-            .filter((service) => service.group === "mirada")
-            .map((service) => (
-              <li>
-                <a href={`/servicios/${service.slug}/`}>{service.name}</a>
-              </li>
-            ))
-        }
-      </ul>
-    </div>
-    <div>
-      <h2>Piel</h2>
-      <ul>
-        {
-          services
-            .filter((service) => service.group === "piel")
-            .map((service) => (
-              <li>
-                <a href={`/servicios/${service.slug}/`}>{service.name}</a>
-              </li>
-            ))
-        }
-        <li><a href="/agenda/">Agendar hora</a></li>
-      </ul>
-    </div>
+    {
+      columns.map((group) => (
+        <div>
+          <h2>{groupLabels[group]}</h2>
+          <ul>
+            {services
+              .filter((service) => service.group === group)
+              .map((service) => (
+                <li>
+                  <a href={`/servicios/${service.slug}/`}>{service.name}</a>
+                </li>
+              ))}
+            {group === "depilacion" && (
+              <>
+                <li>
+                  <a href="/servicios/masajes-piedras-calientes-ovalle/">Masajes piedras calientes</a>
+                </li>
+                <li>
+                  <a href="/agenda/">Agendar hora</a>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      ))
+    }
   </div>
   <div class="wrap footer__legal">
     <p>

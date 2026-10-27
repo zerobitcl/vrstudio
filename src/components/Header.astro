@@ -10,12 +10,14 @@ const { pathname, waMessage = defaultWa } = Astro.props;
 
 const links = [
   { href: "/servicios/", label: "Tratamientos" },
+  { href: "/#precios", label: "Precios" },
   { href: "/agenda/", label: "Agenda" },
 ];
 
 function current(href: string) {
   const path = pathname.replace(/\/$/, "") || "/";
   const target = href.replace(/\/$/, "") || "/";
+  if (target.startsWith("/#")) return false;
   if (target === "/servicios") return path === "/servicios" || path.startsWith("/servicios/");
   return path === target;
 }
@@ -24,7 +26,7 @@ function current(href: string) {
 <header class="header">
   <div class="wrap header__inner">
     <a class="brand" href="/" aria-label="Victoria Rivera Studio, inicio">
-      <span class="mark mark--sm" aria-hidden="true"><span class="mark__vr">VR</span></span>
+      <img class="brand__mark" src="/logo-mark.png" width="44" height="44" alt="" />
       <span>
         <span class="brand__name">Victoria Rivera</span>
         <span class="brand__meta">Studio · Ovalle</span>

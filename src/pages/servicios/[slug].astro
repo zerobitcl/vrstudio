@@ -5,6 +5,8 @@ import {
   absoluteUrl,
   businessId,
   faqJsonLd,
+  formatPrice,
+  groupLabels,
   relatedServices,
   services,
   site,
@@ -22,17 +24,30 @@ const service = services.find((item) => item.slug === Astro.params.slug) as Serv
 const related = relatedServices(service);
 const canonicalPath = `/servicios/${service.slug}/`;
 
+const offer =
+  service.price != null
+    ? {
+        "@type": "Offer",
+        price: service.price,
+        priceCurrency: "CLP",
+        availability: "https://schema.org/InStock",
+        url: absoluteUrl(canonicalPath),
+      }
+    : undefined;
+
 const jsonLd = [
   {
     "@type": "Service",
     name: `${service.name} en Ovalle`,
     description: service.description,
     url: absoluteUrl(canonicalPath),
+    image: service.image ? absoluteUrl(service.image) : absoluteUrl("/logo.jpg"),
     areaServed: {
       "@type": "City",
       name: "Ovalle, Coquimbo, Chile",
     },
     provider: { "@id": businessId },
+    ...(offer ? { offers: offer } : {}),
   },
   {
     "@type": "BreadcrumbList",
@@ -57,17 +72,52 @@ const jsonLd = [
           <span aria-hidden="true">/</span>
           <span>{service.name}</span>
         </nav>
-        <p class="kicker">{service.group === "mirada" ? "Mirada" : "Piel"} · {site.city}</p>
+        <p class="kicker">{groupLabels[service.group]} · {site.city}</p>
         <h1>{service.h1} <em>{service.h1em}</em></h1>
         <p class="lead">{service.lead}</p>
+        {
+          service.image && (
+            <figure class="service-shot">
+              <img
+                src={service.image}
+                alt={`${service.name} en Victoria Rivera Studio, Ovalle`}
+                width="900"
+                height="1125"
+                loading="eager"
+                decoding="async"
+              />
+            </figure>
+          )
+        }
       </div>
       <aside class="aside">
+        <h2>Precio</h2>
+        {
+          service.variants?.length ? (
+            <ul class="aside__prices">
+              {service.variants.map((variant) => (
+                <li>
+                  <span>{variant.name}</span>
+                  <strong>
+                    {variant.price != null ? formatPrice(variant.price) : "Consultar"}
+                  </strong>
+                  {variant.note && <em>{variant.note}</em>}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="aside__price">
+              {service.price != null ? formatPrice(service.price) : "Consultar por WhatsApp"}
+              {service.priceNote && <span>{service.priceNote}</span>}
+            </p>
+          )
+        }
         <h2>En la sesión</h2>
         <ul>
           {service.includes.map((item) => <li>{item}</li>)}
         </ul>
         <a class="btn btn--solid btn--full" href={waLink(service.waText)}>Agendar este tratamiento</a>
-        <p class="hero__note">El valor se confirma por WhatsApp · {site.phoneDisplay}</p>
+        <p class="hero__note">WhatsApp {site.phoneDisplay}</p>
       </aside>
     </header>
 
@@ -119,7 +169,10 @@ const jsonLd = [
       {
         related.map((item) => (
           <a href={`/servicios/${item.slug}/`}>
-            <span>{item.name}</span>
+            <span>
+              {item.name}
+              {item.price != null ? ` · desde ${formatPrice(item.price)}` : ""}
+            </span>
             <span aria-hidden="true">→</span>
           </a>
         ))

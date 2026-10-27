@@ -9,9 +9,9 @@
   "lang": "es-CL",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/logo-mark.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     },
     {

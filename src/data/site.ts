@@ -30,6 +30,10 @@ export function absoluteUrl(path: string) {
   return `${base}${clean}`;
 }
 
+export function formatPrice(value: number) {
+  return `$${value.toLocaleString("es-CL")}`;
+}
+
 export const defaultWa =
   "Hola Victoria, quiero agendar hora en el estudio. Vengo desde la página web.";
 
@@ -40,22 +44,48 @@ export type Block =
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] };
 
+export type ServiceGroup = "mirada" | "piel" | "depilacion" | "cuerpo";
+
 export type Service = {
   slug: string;
   name: string;
   menu: string;
-  group: "mirada" | "piel";
+  group: ServiceGroup;
   seoTitle: string;
   description: string;
   h1: string;
   h1em: string;
   lead: string;
+  price?: number | null;
+  priceNote?: string;
+  variants?: { name: string; price: number | null; note?: string }[];
   includes: string[];
   blocks: Block[];
   faqs: Faq[];
   related: string[];
   waText: string;
+  image?: string;
 };
+
+export const groupLabels: Record<ServiceGroup, string> = {
+  mirada: "Mirada",
+  piel: "Piel",
+  depilacion: "Depilación",
+  cuerpo: "Cuerpo",
+};
+
+export const gallery = [
+  {
+    src: "/galeria/lash-lifting-coriano-brow-lamination-01.jpg",
+    alt: "Resultado de lash lifting coriano y brow lamination con diseño y tinte en Ovalle",
+    caption: "Lash lifting coriano + brow lamination, diseño y tinte",
+  },
+  {
+    src: "/galeria/lash-lifting-coriano-brow-lamination-02.jpg",
+    alt: "Mirada con pestaña elevada y ceja laminada en Victoria Rivera Studio Ovalle",
+    caption: "Mirada abierta, ceja definida",
+  },
+] as const;
 
 export const areas = [
   {
@@ -87,19 +117,19 @@ export const homeFaqs: Faq[] = [
   },
   {
     q: "¿Qué tratamientos hacen?",
-    a: "Mirada y piel. En mirada: lash lifting, laminado de cejas, diseño de cejas y anime lashes. En piel: limpieza facial con el protocolo del estudio y rejuvenecimiento con dermapen y/o radiofrecuencia, cuando la piel lo permite.",
+    a: "Mirada, piel, depilación y cuerpo. En mirada: lash lifting tradicional y coriano, laminado de cejas, diseño con visagismo y anime lashes. En piel: limpieza facial profunda o express, y rejuvenecimiento. También epilación hindú, depilación con cera, depilación láser y masajes con piedras calientes.",
   },
   {
     q: "¿Cómo agendo hora?",
     a: "Por WhatsApp al +56 9 2602 6868. Indica el tratamiento, tu nombre y el día o el momento que te acomoda. La hora queda confirmada en el chat. En esta página no se guarda ningún dato.",
   },
   {
-    q: "¿Publican los precios?",
-    a: "El valor se confirma por WhatsApp según el tratamiento. Así evitas un número genérico que no corresponde a lo que tu pestaña o tu piel necesitan.",
+    q: "¿Cuáles son los precios?",
+    a: "Los precios de mirada, piel, epilación hindú y masajes están publicados en esta página. Depilación con cera y depilación láser se confirman por WhatsApp. El valor de un pack o combinación también se confirma en el chat.",
   },
   {
-    q: "¿El lash lifting usa mi pestaña?",
-    a: "Sí. El lash lifting curva tu pestaña natural: no se agregan extensiones. Las anime lashes son otra técnica, con extensiones, volumen y definición. Si no tienes claro cuál te favorece, lo vemos por WhatsApp antes de agendar.",
+    q: "¿Qué diferencia hay entre lifting tradicional y coriano?",
+    a: "El lifting tradicional curva tu pestaña natural. El lash lifting coriano (con color) suma definición y color para una mirada más marcada, siempre sobre tu pestaña. Si no sabes cuál te favorece, lo vemos por WhatsApp.",
   },
   {
     q: "¿Atienden si estoy embarazada o con la piel irritada?",
@@ -114,47 +144,45 @@ export const services: Service[] = [
   {
     slug: "lash-lifting-ovalle",
     name: "Lash lifting",
-    menu: "Curva tu pestaña natural y abre la mirada.",
+    menu: "Tradicional o coriano, sobre tu pestaña natural.",
     group: "mirada",
     seoTitle: "Lash lifting en Ovalle",
     description:
-      "Lash lifting en Ovalle para curvar tu pestaña natural y lograr una mirada más abierta. Victoria Rivera Studio, Valle del Limarí. Agenda por WhatsApp.",
+      "Lash lifting tradicional y lash lifting coriano en Ovalle. Desde $20.000. Victoria Rivera Studio, Valle del Limarí. Agenda por WhatsApp.",
     h1: "Lash lifting",
     h1em: "en Ovalle",
-    lead: "Una curva limpia sobre tu propia pestaña. La mirada se ve más abierta y despierta, sin el peso de una extensión y sin el maquillaje de todos los días.",
+    lead: "Curva limpia sobre tu propia pestaña. El tradicional abre la mirada; el coriano suma color y definición, sin extensiones.",
+    price: 20000,
+    priceNote: "Desde el lifting tradicional",
+    variants: [
+      { name: "Lifting tradicional", price: 20000 },
+      { name: "Lash lifting coriano (con color)", price: 30000 },
+    ],
     includes: [
-      "Valoración de tu pestaña antes de empezar",
-      "Lifting de la pestaña natural",
+      "Valoración de tu pestaña",
+      "Lifting tradicional o coriano",
       "Indicaciones de cuidado al salir",
     ],
+    image: "/galeria/lash-lifting-coriano-brow-lamination-01.jpg",
     blocks: [
       {
         type: "p",
-        text: "El lash lifting en Ovalle es el tratamiento de mirada de Victoria Rivera Studio para quien quiere realzar lo que ya tiene. Se trabaja la pestaña natural: se eleva y se curva para que el ojo se vea más abierto, con un acabado que se lee natural de cerca.",
+        text: "El lash lifting en Ovalle de Victoria Rivera Studio trabaja tu pestaña natural: la eleva y la curva para que el ojo se vea más abierto. No se agregan extensiones.",
       },
       {
         type: "h2",
-        text: "Para quién tiene sentido",
+        text: "Dos opciones",
       },
       {
         type: "ul",
         items: [
-          "Quieres dejar la máscara para el diario, o usarla solo cuando te provoca.",
-          "Tu pestaña es propia y buscas curva, no volumen agregado.",
-          "Prefieres un resultado que acompañe tu cara y no una mirada recargada.",
+          "Lifting tradicional ($20.000): curva limpia, mirada natural.",
+          "Lash lifting coriano con color ($30.000): la misma base, con más definición y color en la pestaña.",
         ],
       },
       {
         type: "p",
-        text: "Si lo que buscas es volumen, picos y un efecto más marcado, el camino es [anime lashes](/servicios/anime-lashes-ovalle/). Son técnicas distintas y no se improvisan una sobre la otra el mismo día: lo definimos antes.",
-      },
-      {
-        type: "h2",
-        text: "Cómo es la sesión",
-      },
-      {
-        type: "p",
-        text: "Partimos mirando el estado de tu pestaña y la forma de tu ojo. El lifting se hace sobre la pestaña natural, con la curva que a tu mirada le sienta. No es un molde igual para todas. Al salir quedan claros los cuidados de las primeras horas.",
+        text: "Si buscas volumen con extensiones, el camino es [anime lashes](/servicios/anime-lashes-ovalle/). Se combinan muy bien con [laminado de cejas](/servicios/laminado-de-cejas-ovalle/) cuando quieres ceja y pestaña en el mismo lenguaje.",
       },
       {
         type: "h2",
@@ -163,87 +191,75 @@ export const services: Service[] = [
       {
         type: "ul",
         items: [
-          "Evita agua, vapor y sauna durante las primeras 24 horas.",
+          "Evita agua, vapor y sauna las primeras 24 horas.",
           "No frotes el párpado ni duermas de cara contra la almohada esa noche.",
           "Deja la máscara a prueba de agua para más adelante.",
-          "Si hay ardor o enrojecimiento que no cede, escríbenos. No lo tapes con otro producto.",
         ],
       },
-      {
-        type: "p",
-        text: careNote,
-      },
-      {
-        type: "h2",
-        text: "Cuánto dura el efecto",
-      },
-      {
-        type: "p",
-        text: "El resultado acompaña el ciclo de crecimiento de tu pestaña y suele mantenerse varias semanas. No es permanente: cuando la pestaña se renueva, la curva se va. Por eso el retoque se conversa según tu crecimiento, no con una fecha rígida de calendario.",
-      },
-      {
-        type: "p",
-        text: "Suele combinarse muy bien con [laminado de cejas](/servicios/laminado-de-cejas-ovalle/) cuando quieres que ceja y pestaña hablen el mismo idioma. Si además quieres perfilar la forma, mira el [diseño de cejas](/servicios/diseno-de-cejas-ovalle/).",
-      },
+      { type: "p", text: careNote },
     ],
     faqs: [
       {
-        q: "¿El lash lifting daña la pestaña?",
-        a: "Hecho sobre una pestaña en buen estado, y con la curva justa, busca realzarla sin quebrarla. Si la pestaña está muy frágil, teñida de más o irritada, se posterga. Eso se ve al inicio de la cita, no a mitad del procedimiento.",
+        q: "¿Cuál elijo: tradicional o coriano?",
+        a: "Si quieres solo curva, el tradicional. Si quieres más definición y color sin máscara, el coriano. En el chat te orientamos según tu pestaña.",
       },
       {
-        q: "¿Puedo hacerme lifting si uso extensiones?",
-        a: "No sobre extensiones puestas. Primero se retiran y se evalúa cómo quedó tu pestaña natural. Si no está en condiciones, esperamos.",
+        q: "¿El lifting daña la pestaña?",
+        a: "Sobre una pestaña en buen estado, y con la curva justa, busca realzarla. Si está frágil o irritada, se posterga.",
       },
       {
-        q: "¿Hacen lash lifting en Monte Patria o Punitaqui?",
-        a: "La atención es en Ovalle. Si vienes desde Monte Patria, Punitaqui, Combarbalá o Río Hurtado, agendas por WhatsApp y coordinamos la hora.",
+        q: "¿Atienden desde Monte Patria o Punitaqui?",
+        a: "La atención es en Ovalle. Si vienes de otra comuna del Limarí, agendas por WhatsApp.",
       },
     ],
-    related: ["anime-lashes-ovalle", "laminado-de-cejas-ovalle", "diseno-de-cejas-ovalle"],
-    waText:
-      "Hola Victoria, quiero agendar lash lifting en Ovalle. ¿Qué días tienes hora?",
+    related: ["laminado-de-cejas-ovalle", "anime-lashes-ovalle", "diseno-de-cejas-ovalle"],
+    waText: "Hola Victoria, quiero agendar lash lifting en Ovalle. ¿Tradicional o coriano?",
   },
   {
     slug: "laminado-de-cejas-ovalle",
     name: "Laminado de cejas",
-    menu: "Orden y definición, sin ceja rígida.",
+    menu: "Brow lamination: orden y definición.",
     group: "mirada",
     seoTitle: "Laminado de cejas en Ovalle",
     description:
-      "Laminado de cejas y brow lamination en Ovalle. Cejas más ordenadas y definidas con Victoria Rivera Studio. Agenda tu hora por WhatsApp.",
+      "Laminado de cejas y brow lamination en Ovalle desde $20.000. Con diseño y tinte de regalo desde $25.000. Victoria Rivera Studio.",
     h1: "Laminado de cejas",
     h1em: "en Ovalle",
-    lead: "El brow lamination ordena el vello que ya tienes: la ceja se ve más nutrida, peinada y definida, sin el trazo dibujado de un tatuaje.",
-    includes: [
-      "Lectura de la dirección de tu vello",
-      "Laminado de cejas",
-      "Peinado y forma al terminar",
+    lead: "El brow lamination peina y fija el vello que ya tienes. La ceja se ve más llena y ordenada, sin tatuaje ni pigmento.",
+    price: 20000,
+    variants: [
+      { name: "Brow lamination", price: 20000 },
+      {
+        name: "Brow lamination + diseño de cejas",
+        price: 25000,
+        note: "Con tinte de regalo",
+      },
     ],
+    includes: [
+      "Lectura de la dirección del vello",
+      "Laminado de cejas",
+      "Opción con diseño y tinte de regalo",
+    ],
+    image: "/galeria/lash-lifting-coriano-brow-lamination-02.jpg",
     blocks: [
       {
         type: "p",
-        text: "El laminado de cejas en Ovalle —también lo buscan como brow lamination— es para la ceja que crece hacia abajo, con huecos visuales o sin forma clara al despertar. Se redirige el vello para que la ceja se vea más llena y ordenada, usando el pelo propio.",
+        text: "El laminado de cejas en Ovalle —también brow lamination— redirige el vello para una ceja más definida. No es microblading: usa el pelo propio.",
       },
       {
         type: "h2",
-        text: "Qué no es",
+        text: "Opciones y precios",
       },
       {
         type: "ul",
         items: [
-          "No es microblading ni micropigmentación. No se implanta pigmento.",
-          "No reemplaza un diseño si la forma está fuera de lugar: a veces conviene partir por el [diseño de cejas](/servicios/diseno-de-cejas-ovalle/).",
-          "No deja la ceja “congelada”. El objetivo es orden, no una pieza rígida.",
+          "Brow lamination: $20.000.",
+          "Brow lamination + diseño de cejas: $25.000, con tinte de regalo.",
         ],
       },
       {
-        type: "h2",
-        text: "Cómo queda el conjunto",
-      },
-      {
         type: "p",
-        text: "La ceja laminada enmarca el lifting. Si quieres las dos cosas, lo habitual en el estudio es pensarlas juntas: [lash lifting](/servicios/lash-lifting-ovalle/) para la curva de la pestaña y laminado para la ceja. En el mensaje de WhatsApp dinos si buscas solo ceja o el conjunto.",
+        text: "Si solo quieres forma y perfilado, mira el [diseño de cejas](/servicios/diseno-de-cejas-ovalle/) con visagismo. El laminado suele ir junto al [lash lifting](/servicios/lash-lifting-ovalle/) cuando buscas la mirada completa.",
       },
       {
         type: "h2",
@@ -252,241 +268,175 @@ export const services: Service[] = [
       {
         type: "ul",
         items: [
-          "No mojes la ceja durante las primeras 24 horas. Eso incluye vapor y ejercicio fuerte.",
-          "Evita dormir de lado apretando la ceja esa primera noche.",
+          "No mojes la ceja las primeras 24 horas.",
+          "Evita vapor, ejercicio fuerte y dormir apretando la ceja esa noche.",
           "Después, un cepillado suave mantiene la dirección.",
-          "No apliques ácidos, retinol ni cera sobre la ceja recién laminada.",
         ],
       },
-      {
-        type: "p",
-        text: `${careNote} El efecto suele durar varias semanas y se va con el crecimiento del vello. El siguiente laminado se agenda cuando la ceja lo pide, no antes.`,
-      },
+      { type: "p", text: careNote },
     ],
     faqs: [
       {
-        q: "¿El laminado duele?",
-        a: "Se siente el trabajo sobre la ceja, no un procedimiento invasivo. Si hay corte, irritación o un producto activo en la zona, se evalúa antes de seguir.",
+        q: "¿El pack incluye tinte?",
+        a: "Sí: brow lamination + diseño de cejas ($25.000) incluye tinte de regalo.",
       },
       {
         q: "¿Sirve si tengo poca ceja?",
-        a: "Ordena y peina el vello que existe. No crea pelo donde no hay. Si la falta de ceja es marcada, te lo digo con honestidad antes de hacer el laminado.",
+        a: "Ordena el vello que existe. No crea pelo donde no hay. Si la falta es marcada, te lo decimos antes.",
       },
       {
-        q: "¿Puedo maquillar la ceja después?",
-        a: "El primer día, no. Cuando ya pasó el plazo de cuidado, un gel suave basta: la idea del laminado es que necesites menos lápiz, no más capas.",
+        q: "¿Duele?",
+        a: "Se siente el trabajo sobre la ceja, no un procedimiento invasivo. Si hay irritación, se evalúa antes.",
       },
     ],
-    related: ["diseno-de-cejas-ovalle", "lash-lifting-ovalle", "anime-lashes-ovalle"],
+    related: ["diseno-de-cejas-ovalle", "lash-lifting-ovalle", "epilacion-hindu-ovalle"],
     waText:
-      "Hola Victoria, quiero agendar laminado de cejas en Ovalle. ¿Lo vemos solo o con lash lifting?",
-  },
-  {
-    slug: "anime-lashes-ovalle",
-    name: "Anime lashes",
-    menu: "Volumen y picos suaves, mirada abierta.",
-    group: "mirada",
-    seoTitle: "Anime lashes en Ovalle",
-    description:
-      "Anime lashes en Ovalle: extensiones con volumen y definición, efecto de mirada abierta. Victoria Rivera Studio. Agenda por WhatsApp.",
-    h1: "Anime lashes",
-    h1em: "en Ovalle",
-    lead: "Extensiones con técnica anime: volumen donde la mirada lo pide y picos que dibujan un ojo más abierto, definido, sin una cortina pareja.",
-    includes: [
-      "Diseño según tu ojo",
-      "Aplicación de anime lashes",
-      "Pauta de mantenimiento",
-    ],
-    blocks: [
-      {
-        type: "p",
-        text: "Las anime lashes en Ovalle son extensiones. A diferencia del [lash lifting](/servicios/lash-lifting-ovalle/), aquí sí se agrega pelo para construir volumen y una definición en picos, el efecto de mirada amplia que se reconoce en la técnica. No es un abanico uniforme: los largos cambian para que el ojo se vea abierto y con carácter.",
-      },
-      {
-        type: "h2",
-        text: "Cómo se decide el diseño",
-      },
-      {
-        type: "p",
-        text: "Se mira la forma del ojo, la densidad de tu pestaña y qué tanto efecto quieres en el día a día. Un anime suave y uno más marcado no se aplican igual. Llegar con una referencia ayuda; la adaptación a tu ojo manda más que la foto.",
-      },
-      {
-        type: "h2",
-        text: "Mantenimiento",
-      },
-      {
-        type: "p",
-        text: "Las extensiones se van con la caída natural de tu pestaña. El relleno se agenda según ese ritmo, no cuando ya quedó la mitad. En la primera cita te decimos una ventana razonable para tu caso.",
-      },
-      {
-        type: "h2",
-        text: "Cuidados después",
-      },
-      {
-        type: "ul",
-        items: [
-          "Las primeras horas, evita agua y vapor sobre los ojos.",
-          "No uses aceite ni desmaquillante oleoso en la línea de las pestañas.",
-          "No tires, no frotes y no duermas de cara contra la almohada.",
-          "Cepilla con suavidad cuando esté indicado. No las pellizques para “ordenarlas”.",
-        ],
-      },
-      {
-        type: "p",
-        text: careNote,
-      },
-      {
-        type: "p",
-        text: "Si tu búsqueda es la curva de la pestaña propia, sin mantenimiento de relleno, vuelve al [lash lifting](/servicios/lash-lifting-ovalle/). Si quieres enmarcar el resultado, el [laminado de cejas](/servicios/laminado-de-cejas-ovalle/) ordena la ceja en la misma lógica de mirada.",
-      },
-    ],
-    faqs: [
-      {
-        q: "¿Las anime lashes se sienten pesadas?",
-        a: "El peso depende del diseño y de tu pestaña. Un mapeo bien hecho no debería tirar del párpado. Si en la valoración la pestaña no sostiene el efecto que quieres, se baja la densidad o se elige otra técnica.",
-      },
-      {
-        q: "¿Puedo mojarme la cara?",
-        a: "Después del plazo inicial, sí, sin remojar ni frotar la línea de las pestañas. El vapor directo y los aceites son lo que más acorta la duración.",
-      },
-      {
-        q: "¿Hacen anime lashes para quienes vienen de La Serena?",
-        a: "La atención es en Ovalle, a unos 90 kilómetros de La Serena. Si vienes desde la costa o desde otra comuna del Limarí, se coordina la hora por WhatsApp.",
-      },
-    ],
-    related: ["lash-lifting-ovalle", "laminado-de-cejas-ovalle", "diseno-de-cejas-ovalle"],
-    waText:
-      "Hola Victoria, quiero agendar anime lashes en Ovalle. Busco volumen y definición.",
+      "Hola Victoria, quiero agendar laminado de cejas en Ovalle. ¿Solo brow o con diseño?",
   },
   {
     slug: "diseno-de-cejas-ovalle",
     name: "Diseño de cejas",
-    menu: "La forma que le sienta a tu rostro.",
+    menu: "Forma y visagismo, según tu rostro.",
     group: "mirada",
     seoTitle: "Diseño de cejas en Ovalle",
     description:
-      "Diseño de cejas en Ovalle: forma y perfilado según tu rostro, en Victoria Rivera Studio. Agenda por WhatsApp en el Valle del Limarí.",
+      "Diseño de cejas con visagismo en Ovalle por $7.000. Victoria Rivera Studio. Agenda por WhatsApp.",
     h1: "Diseño de cejas",
     h1em: "en Ovalle",
-    lead: "Antes de depilar, se lee el rostro. El diseño deja una ceja que acompaña tu ojo y tu frente, no una plantilla repetida.",
-    includes: [
-      "Lectura de proporciones",
-      "Diseño de la forma",
-      "Perfilado de la ceja",
-    ],
+    lead: "Antes de depilar, se lee el rostro. Diseño con visagismo para una ceja que acompaña tu ojo y tu frente.",
+    price: 7000,
+    priceNote: "Diseño de cejas + visagismo",
+    includes: ["Visagismo", "Diseño de la forma", "Perfilado de la ceja"],
     blocks: [
       {
         type: "p",
-        text: "El diseño de cejas en Ovalle parte por mirar: nacimiento, arco, cola y el espacio con el ojo. Recién ahí se limpia lo que sobra. El resultado tiene que seguir viéndose como tu ceja, solo que en su sitio.",
-      },
-      {
-        type: "h2",
-        text: "Diseño y laminado no son lo mismo",
-      },
-      {
-        type: "p",
-        text: "El diseño define la forma y perfila. El [laminado de cejas](/servicios/laminado-de-cejas-ovalle/) peina y fija la dirección del vello. Hay cejas que necesitan las dos cosas y cejas que con el diseño bastan. Si llegas con la ceja muy depilada, no se promete un laminado milagroso encima: primero se recupera forma.",
-      },
-      {
-        type: "h2",
-        text: "Qué esperar de la cita",
+        text: "El diseño de cejas en Ovalle parte por mirar proporciones: nacimiento, arco, cola y el espacio con el ojo. Recién ahí se perfila. Incluye visagismo: la forma se decide para tu cara, no con una plantilla.",
       },
       {
         type: "ul",
         items: [
-          "Llega con la ceja sin lápiz reciente, o avisa si vienes maquillada para limpiar la zona.",
-          "Se acuerda la forma antes de sacar vello. Lo que se depila no vuelve ese día.",
-          "Si usas ácidos o retinoides cerca de la ceja, dilo al agendar.",
+          "Diseño de cejas + visagismo: $7.000.",
+          "Si quieres ordenar el vello después, el [laminado de cejas](/servicios/laminado-de-cejas-ovalle/) peina y fija la dirección.",
+          "El retoque de cejas ($5.000) mantiene la forma entre citas.",
         ],
       },
       {
         type: "p",
-        text: "Una ceja bien puesta cambia cómo se lee el [lash lifting](/servicios/lash-lifting-ovalle/) y las [anime lashes](/servicios/anime-lashes-ovalle/). La mirada es el conjunto, no una sola técnica aislada.",
+        text: "No es microblading ni micropigmentación. Es forma y perfilado sobre tu ceja.",
       },
     ],
     faqs: [
       {
-        q: "¿Hacen microblading?",
-        a: "No. El diseño del estudio es forma y perfilado sobre tu ceja. No es un tatuaje ni una micropigmentación.",
+        q: "¿Qué es el visagismo?",
+        a: "Es leer las proporciones de tu rostro para elegir la forma de ceja que te favorece, antes de sacar vello.",
       },
       {
-        q: "¿Duele el perfilado?",
-        a: "Se siente, y en piel sensible un poco más. Si la piel está irritada, con acné activo en la zona o recién exfoliada, se mueve la cita.",
+        q: "¿Hacen microblading?",
+        a: "No. Este servicio es diseño y perfilado, no tatuaje ni pigmentación.",
       },
       {
         q: "¿Cada cuánto se rediseña?",
-        a: "El perfilado de mantención sigue el crecimiento de tu vello. La primera visita es la más decisiva porque ahí queda la estructura; después se mantiene la forma, no se reinventa cada mes.",
+        a: "La primera visita fija la estructura. Después el retoque sigue el crecimiento de tu vello.",
       },
     ],
-    related: ["laminado-de-cejas-ovalle", "lash-lifting-ovalle", "limpieza-facial-ovalle"],
-    waText: "Hola Victoria, quiero agendar un diseño de cejas en Ovalle.",
+    related: ["laminado-de-cejas-ovalle", "epilacion-hindu-ovalle", "lash-lifting-ovalle"],
+    waText: "Hola Victoria, quiero agendar diseño de cejas con visagismo en Ovalle.",
   },
   {
-    slug: "limpieza-facial-ovalle",
-    name: "Limpieza facial",
-    menu: "Protocolo completo, de la higiene al protector.",
-    group: "piel",
-    seoTitle: "Limpieza facial en Ovalle",
+    slug: "anime-lashes-ovalle",
+    name: "Anime lashes",
+    menu: "Extensiones con volumen y picos definidos.",
+    group: "mirada",
+    seoTitle: "Anime lashes en Ovalle",
     description:
-      "Limpieza facial en Ovalle con vaporozono, extracción, alta frecuencia, dermabrasión y masaje linfático. Victoria Rivera Studio. Agenda por WhatsApp.",
-    h1: "Limpieza facial",
+      "Anime lashes en Ovalle: extensiones con volumen y definición. Victoria Rivera Studio. Agenda por WhatsApp.",
+    h1: "Anime lashes",
     h1em: "en Ovalle",
-    lead: "Un protocolo de estudio, en orden: preparar la piel, extraer con criterio, calmar y cerrar siempre con hidratación y protector solar.",
-    includes: [
-      "Cleanser gel extra-suave",
-      "Exfoliación",
-      "Vaporozono",
-      "Extracción de impurezas",
-      "Alta frecuencia",
-      "Dermabrasión",
-      "Hidratación",
-      "Masaje linfático",
-      "Shock vitamínico con dermapen y/o radiofrecuencia, según la piel",
-      "Protector solar",
-    ],
+    lead: "Extensiones con técnica anime: volumen donde la mirada lo pide y picos que abren el ojo, sin una cortina pareja.",
+    price: null,
+    priceNote: "Valor por WhatsApp",
+    includes: ["Diseño según tu ojo", "Aplicación de anime lashes", "Pauta de mantenimiento"],
     blocks: [
       {
         type: "p",
-        text: "La limpieza facial en Ovalle de Victoria Rivera Studio no es un vapor y una crema. Es la secuencia del estudio: cleanser gel extra-suave, exfoliación, vaporozono, extracción de impurezas, alta frecuencia, dermabrasión, hidratación, masaje linfático y cierre con protector solar. El shock vitamínico con dermapen y/o radiofrecuencia entra solo si ese día tu piel lo permite.",
-      },
-      {
-        type: "h2",
-        text: "El orden importa",
+        text: "Las anime lashes en Ovalle son extensiones. A diferencia del [lash lifting](/servicios/lash-lifting-ovalle/), aquí sí se agrega pelo para construir volumen y definición en picos.",
       },
       {
         type: "p",
-        text: "Primero se baja la barrera de célula muerta y se abre el poro con vaporozono (vapor con ozono). Recién ahí tiene sentido la extracción. La alta frecuencia viene después, como apoyo de higiene sobre la piel ya trabajada. La dermabrasión, la hidratación y el masaje linfático devuelven calma y luminosidad. Saltar pasos para “ir a lo rápido” deja la piel irritada y a medias.",
+        text: "El valor se confirma por WhatsApp según el diseño. Si prefieres curva sobre tu pestaña natural, vuelve al lifting tradicional o coriano.",
       },
       {
         type: "h2",
-        text: "Qué hace cada paso",
+        text: "Cuidados",
       },
       {
         type: "ul",
         items: [
-          "Cleanser gel extra-suave: saca el día sin dejar la piel tirante.",
-          "Exfoliación: retira la célula opaca para que lo que viene penetre parejo.",
-          "Vaporozono: ablanda y prepara la extracción.",
-          "Extracción de impurezas: solo lo que está listo. No se fuerza un poro cerrado.",
-          "Alta frecuencia: apoyo de higiene después de extraer.",
-          "Dermabrasión: renueva textura de forma superficial.",
-          "Hidratación: repone lo que la limpieza movió.",
-          "Masaje linfático: descongestiona y baja la cara hinchada.",
-          "Shock vitamínico con dermapen y/o radiofrecuencia: opcional, según valoración.",
-          "Protector solar: la sesión no termina sin él.",
+          "Las primeras horas, evita agua y vapor.",
+          "No uses aceites en la línea de las pestañas.",
+          "No tires ni frotes. El relleno se agenda según tu caída natural.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Cuánto cuestan?",
+        a: "El valor se confirma por WhatsApp según el mapeo y la densidad. Escríbenos con una referencia si tienes una.",
+      },
+      {
+        q: "¿Se sienten pesadas?",
+        a: "Un diseño bien hecho no debería tirar del párpado. Si tu pestaña no sostiene el efecto, se baja la densidad o se elige otra técnica.",
+      },
+    ],
+    related: ["lash-lifting-ovalle", "laminado-de-cejas-ovalle", "diseno-de-cejas-ovalle"],
+    waText: "Hola Victoria, quiero agendar anime lashes en Ovalle. Busco volumen y definición.",
+  },
+  {
+    slug: "limpieza-facial-ovalle",
+    name: "Limpieza facial",
+    menu: "Profunda o express, con protocolo de estudio.",
+    group: "piel",
+    seoTitle: "Limpieza facial en Ovalle",
+    description:
+      "Limpieza facial profunda ($30.000) y express ($25.000) en Ovalle. Victoria Rivera Studio. Agenda por WhatsApp.",
+    h1: "Limpieza facial",
+    h1em: "en Ovalle",
+    lead: "Dos ritmos: profunda, con el protocolo completo del estudio, o express cuando necesitas higiene y luminosidad en menos tiempo.",
+    price: 25000,
+    priceNote: "Desde la express",
+    variants: [
+      { name: "Limpieza facial express", price: 25000 },
+      { name: "Limpieza facial profunda", price: 30000 },
+    ],
+    includes: [
+      "Cleanser gel extra-suave",
+      "Exfoliación y vaporozono",
+      "Extracción con criterio",
+      "Hidratación y protector solar",
+    ],
+    blocks: [
+      {
+        type: "p",
+        text: "La limpieza facial en Ovalle no es un vapor y una crema. La profunda sigue la secuencia del estudio: cleanser, exfoliación, vaporozono, extracción, alta frecuencia, dermabrasión, hidratación, masaje linfático y cierre con protector. El shock vitamínico con dermapen y/o radiofrecuencia entra solo si la piel lo permite.",
+      },
+      {
+        type: "h2",
+        text: "Precios",
+      },
+      {
+        type: "ul",
+        items: [
+          "Limpieza facial express: $25.000.",
+          "Limpieza facial profunda: $30.000.",
         ],
       },
       {
-        type: "h2",
-        text: "Para quién es",
-      },
-      {
         type: "p",
-        text: "Para piel con poros cargados, opacidad o esa cara de cansancio que no se va con agua. No es un tratamiento médico ni promete borrar acné, manchas o arrugas. Si hay una dermatitis activa, un brote fuerte o un procedimiento dermatológico reciente, se posterga. Si buscas el foco en dermapen o radiofrecuencia, está desarrollado en [rejuvenecimiento facial](/servicios/rejuvenecimiento-facial-ovalle/).",
+        text: "Si el foco es dermapen o radiofrecuencia, mira [rejuvenecimiento facial](/servicios/rejuvenecimiento-facial-ovalle/).",
       },
       {
         type: "h2",
-        text: "Después de la limpieza",
+        text: "Después",
       },
       {
         type: "ul",
@@ -494,108 +444,210 @@ export const services: Service[] = [
           "Ese día evita sol directo, sauna y maquillaje pesado.",
           "No toques la zona extraída.",
           "Reaplica protector si vas a seguir al aire.",
-          "Si hubo dermapen o radiofrecuencia, los cuidados de los días siguientes se explican antes de que salgas.",
         ],
       },
-      {
-        type: "p",
-        text: careNote,
-      },
+      { type: "p", text: careNote },
     ],
     faqs: [
       {
-        q: "¿La extracción deja la cara roja?",
-        a: "Puede verse rosada al salir, sobre todo si había bastante poro cargado. Tiene que ir bajando. Enrojecimiento que arde o se extiende no es lo esperado: escríbenos.",
+        q: "¿Cuál elijo: express o profunda?",
+        a: "Express para higiene y luminosidad. Profunda cuando hay más poro cargado o quieres el protocolo completo. Si dudas, lo vemos por WhatsApp.",
       },
       {
         q: "¿Siempre incluyen dermapen?",
-        a: "No. En el protocolo va como shock vitamínico con dermapen y/o radiofrecuencia, según lo que la piel aguante ese día. Hay limpiezas que cierran sin ese paso y quedan bien hechas.",
-      },
-      {
-        q: "¿Cada cuánto conviene una limpieza facial en Ovalle?",
-        a: "Depende de tu piel y del sol del valle, no de una promo mensual. En la cita te decimos una frecuencia razonable. Más seguido no significa mejor.",
+        a: "No. Entra como shock vitamínico solo si la piel lo aguanta ese día.",
       },
     ],
-    related: ["rejuvenecimiento-facial-ovalle", "diseno-de-cejas-ovalle", "lash-lifting-ovalle"],
-    waText:
-      "Hola Victoria, quiero agendar una limpieza facial en Ovalle. ¿Qué días tienes?",
+    related: ["rejuvenecimiento-facial-ovalle", "masajes-piedras-calientes-ovalle", "diseno-de-cejas-ovalle"],
+    waText: "Hola Victoria, quiero agendar limpieza facial en Ovalle. ¿Express o profunda?",
   },
   {
     slug: "rejuvenecimiento-facial-ovalle",
     name: "Rejuvenecimiento facial",
-    menu: "Dermapen y radiofrecuencia, solo si la piel lo pide.",
+    menu: "Dermapen y radiofrecuencia, según la piel.",
     group: "piel",
     seoTitle: "Rejuvenecimiento facial en Ovalle",
     description:
-      "Rejuvenecimiento facial en Ovalle con dermapen y radiofrecuencia, dentro de un protocolo de piel. Victoria Rivera Studio. Agenda por WhatsApp.",
+      "Rejuvenecimiento facial en Ovalle con dermapen y radiofrecuencia. Victoria Rivera Studio. Agenda por WhatsApp.",
     h1: "Rejuvenecimiento facial",
     h1em: "en Ovalle",
-    lead: "Dermapen y radiofrecuencia para una piel más luminosa y descansada. Se indican sobre una piel preparada, no como un aparato suelto.",
+    lead: "Dermapen y radiofrecuencia sobre una piel preparada. Se buscan luminosidad y un aspecto más descansado, no milagros de una sola sesión.",
+    price: null,
+    priceNote: "Valor por WhatsApp",
     includes: [
-      "Valoración de la piel ese día",
-      "Preparación previa del protocolo facial",
-      "Dermapen y/o radiofrecuencia, según indicación",
-      "Hidratación y protector solar",
+      "Valoración ese día",
+      "Preparación facial",
+      "Dermapen y/o radiofrecuencia",
+      "Hidratación y protector",
     ],
     blocks: [
       {
         type: "p",
-        text: "El rejuvenecimiento facial en Ovalle se apoya en el mismo criterio de la [limpieza facial](/servicios/limpieza-facial-ovalle/): primero la piel se limpia y se prepara, después se decide si entra un shock vitamínico con dermapen, radiofrecuencia, o ninguno. El “y/o” es parte del método. No todas las pieles reciben los dos el mismo día.",
-      },
-      {
-        type: "h2",
-        text: "Qué puedes esperar",
+        text: "El rejuvenecimiento en Ovalle se apoya en la [limpieza facial](/servicios/limpieza-facial-ovalle/): primero se prepara la piel, después se decide si entra dermapen, radiofrecuencia, o ninguno.",
       },
       {
         type: "p",
-        text: "Una piel de aspecto más parejo, luminoso y descansado. No es un tratamiento médico, no rellena surcos y no reemplaza una indicación dermatológica. Quien promete borrar arrugas en una sesión está vendiendo otra cosa.",
-      },
-      {
-        type: "h2",
-        text: "Cómo se elige la técnica",
-      },
-      {
-        type: "ul",
-        items: [
-          "Dermapen: microestimulación. Se usa si la barrera de tu piel está en condiciones de recibirlo.",
-          "Radiofrecuencia: calor controlado, buscando un aspecto más firme y descansado.",
-          "Si la piel está sensible, bronceada de más o con un activo irritante encima, se hace la higiene y se deja el aparato para otro día.",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Antes de venir",
-      },
-      {
-        type: "ul",
-        items: [
-          "Cuéntanos si usas retinoides, ácidos, isotretinoína o si tuviste un procedimiento reciente.",
-          "Llega con la cara limpia, sin maquillaje de base.",
-          "Si estás embarazada o con una infección cutánea, este tratamiento se posterga.",
-        ],
-      },
-      {
-        type: "p",
-        text: "Los cuidados de los días siguientes —sol, maquillaje, activos— se entregan al cerrar la sesión, porque dependen de qué se hizo de verdad. No hay una receta única publicada que reemplace esa indicación.",
+        text: "No es un tratamiento médico y no reemplaza una indicación dermatológica. El valor se confirma por WhatsApp según lo que se haga ese día.",
       },
     ],
     faqs: [
       {
         q: "¿Duele el dermapen?",
-        a: "Se siente la pasada. La intensidad se ajusta. Si el dolor sale de lo tolerable, se detiene. No es una prueba de resistencia.",
+        a: "Se siente la pasada. La intensidad se ajusta. Si sale de lo tolerable, se detiene.",
       },
       {
-        q: "¿Puedo tomar sol después en Ovalle?",
-        a: "El sol del Limarí no perdona una piel recién trabajada. Protector, sombra y nada de exposición directa mientras dure el cuidado que te indiquemos.",
-      },
-      {
-        q: "¿En una sesión se ve el cambio?",
-        a: "La luminosidad inmediata puede notarse. Un cambio de textura, cuando ocurre, se construye con constancia y con la piel cuidada entre medio. No se agenda “el milagro” de una sola visita.",
+        q: "¿Puedo tomar sol después?",
+        a: "El sol del Limarí no perdona una piel recién trabajada. Protector y sombra mientras dure el cuidado indicado.",
       },
     ],
-    related: ["limpieza-facial-ovalle", "diseno-de-cejas-ovalle", "lash-lifting-ovalle"],
+    related: ["limpieza-facial-ovalle", "masajes-piedras-calientes-ovalle", "lash-lifting-ovalle"],
     waText:
       "Hola Victoria, quiero consultar por rejuvenecimiento facial en Ovalle (dermapen / radiofrecuencia).",
+  },
+  {
+    slug: "epilacion-hindu-ovalle",
+    name: "Epilación hindú",
+    menu: "Threading de rostro, cejas y bozo.",
+    group: "depilacion",
+    seoTitle: "Epilación hindú en Ovalle",
+    description:
+      "Epilación hindú en Ovalle: rostro completo desde $10.000, con diseño de cejas $20.000. Retoque y bozo. Victoria Rivera Studio.",
+    h1: "Epilación hindú",
+    h1em: "en Ovalle",
+    lead: "Threading con hilo para depilar con precisión. Ideal para rostro, cejas y bozo, sin cera caliente sobre la piel.",
+    price: 10000,
+    priceNote: "Desde rostro completo",
+    variants: [
+      { name: "Rostro completo", price: 10000 },
+      { name: "Rostro completo + diseño de cejas", price: 20000 },
+      { name: "Retoque de cejas", price: 5000 },
+      { name: "Bozo", price: 2000 },
+    ],
+    includes: [
+      "Depilación con hilo",
+      "Opciones de rostro, cejas o bozo",
+      "Indicaciones post sesión",
+    ],
+    blocks: [
+      {
+        type: "p",
+        text: "La epilación hindú en Ovalle usa hilo (threading) para retirar el vello con control. Es una opción limpia para el rostro y especialmente útil en cejas finas o zonas sensibles a la cera.",
+      },
+      {
+        type: "h2",
+        text: "Precios",
+      },
+      {
+        type: "ul",
+        items: [
+          "Rostro completo: $10.000.",
+          "Rostro completo + diseño de cejas: $20.000.",
+          "Retoque de cejas: $5.000.",
+          "Bozo: $2.000.",
+        ],
+      },
+      {
+        type: "p",
+        text: "También ofrecemos [depilación con cera](/servicios/depilacion-ovalle/) y depilación láser; esos valores se confirman por WhatsApp.",
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Duele más que la cera?",
+        a: "Se siente, sobre todo la primera vez. Muchas personas lo prefieren en el rostro porque es más preciso. Si la piel está irritada, se posterga.",
+      },
+      {
+        q: "¿Sirve para cejas?",
+        a: "Sí. El retoque de cejas y el pack con diseño están pensados para mantener la forma entre citas.",
+      },
+    ],
+    related: ["diseno-de-cejas-ovalle", "depilacion-ovalle", "laminado-de-cejas-ovalle"],
+    waText: "Hola Victoria, quiero agendar epilación hindú en Ovalle.",
+  },
+  {
+    slug: "depilacion-ovalle",
+    name: "Depilación con cera y láser",
+    menu: "Cera y láser: valor por WhatsApp.",
+    group: "depilacion",
+    seoTitle: "Depilación con cera y láser en Ovalle",
+    description:
+      "Depilación con cera y depilación láser en Ovalle. Victoria Rivera Studio. Consulta el valor y agenda por WhatsApp.",
+    h1: "Depilación",
+    h1em: "en Ovalle",
+    lead: "Depilación con cera y depilación láser. El valor se confirma por WhatsApp según zona y sesión.",
+    price: null,
+    priceNote: "Valor por WhatsApp",
+    variants: [
+      { name: "Depilación con cera", price: null, note: "Consultar" },
+      { name: "Depilación láser", price: null, note: "Consultar" },
+    ],
+    includes: ["Valoración de la zona", "Indicación de técnica", "Cuidados posteriores"],
+    blocks: [
+      {
+        type: "p",
+        text: "En Victoria Rivera Studio también se agenda depilación con cera y depilación láser en Ovalle. Los precios se confirman por WhatsApp según la zona y el número de sesiones.",
+      },
+      {
+        type: "p",
+        text: "Para el rostro con hilo, mira [epilación hindú](/servicios/epilacion-hindu-ovalle/). Para cejas, el [diseño](/servicios/diseno-de-cejas-ovalle/) define la forma antes de mantener.",
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Por qué no publican el precio de cera y láser?",
+        a: "Depende de la zona y, en láser, del plan de sesiones. Preferimos darte el valor exacto por WhatsApp.",
+      },
+      {
+        q: "¿Atienden piernas y axilas?",
+        a: "Escríbenos la zona que buscas y te confirmamos disponibilidad y valor.",
+      },
+    ],
+    related: ["epilacion-hindu-ovalle", "diseno-de-cejas-ovalle", "limpieza-facial-ovalle"],
+    waText: "Hola Victoria, quiero consultar por depilación con cera / láser en Ovalle.",
+  },
+  {
+    slug: "masajes-piedras-calientes-ovalle",
+    name: "Masajes con piedras calientes",
+    menu: "Relajación profunda con piedras calientes.",
+    group: "cuerpo",
+    seoTitle: "Masajes con piedras calientes en Ovalle",
+    description:
+      "Masajes con piedras calientes en Ovalle por $35.000. Victoria Rivera Studio. Agenda por WhatsApp.",
+    h1: "Masajes con piedras calientes",
+    h1em: "en Ovalle",
+    lead: "Calor y presión controlada para soltar tensión. Una sesión de $35.000 pensada para descansar de verdad.",
+    price: 35000,
+    includes: [
+      "Sesión con piedras calientes",
+      "Trabajo de relajación",
+      "Indicaciones al salir",
+    ],
+    blocks: [
+      {
+        type: "p",
+        text: "El masaje con piedras calientes en Ovalle combina el trabajo manual con el calor de las piedras para bajar la tensión muscular. No es un tratamiento médico; es una sesión de bienestar.",
+      },
+      {
+        type: "ul",
+        items: ["Valor: $35.000 por sesión."],
+      },
+      {
+        type: "p",
+        text: "Si además quieres cuidar la cara el mismo día, conversamos si cabe una [limpieza facial](/servicios/limpieza-facial-ovalle/) en otra hora.",
+      },
+    ],
+    faqs: [
+      {
+        q: "¿Cuánto dura?",
+        a: "La duración exacta se confirma al agendar. El valor publicado es $35.000 por sesión.",
+      },
+      {
+        q: "¿Hay contraindicaciones?",
+        a: "Embarazo, fiebre, heridas abiertas o una indicación médica reciente pueden postergar la sesión. Cuéntanos al escribir.",
+      },
+    ],
+    related: ["limpieza-facial-ovalle", "rejuvenecimiento-facial-ovalle", "lash-lifting-ovalle"],
+    waText: "Hola Victoria, quiero agendar masaje con piedras calientes en Ovalle.",
   },
 ];
 
@@ -609,6 +661,10 @@ export function relatedServices(service: Service) {
     .filter((item): item is Service => Boolean(item));
 }
 
+export function servicesByGroup(group: ServiceGroup) {
+  return services.filter((service) => service.group === group);
+}
+
 export const businessId = `${siteUrl.replace(/\/$/, "")}/#studio`;
 
 export function businessJsonLd() {
@@ -618,11 +674,12 @@ export function businessJsonLd() {
     name: site.name,
     alternateName: [site.shortName, site.handle],
     description:
-      "Estudio de lash lifting, laminado de cejas, anime lashes, diseño de cejas y estética facial en Ovalle, Valle del Limarí.",
+      "Estudio de lash lifting, laminado de cejas, diseño de cejas, limpieza facial, epilación hindú y masajes en Ovalle, Valle del Limarí.",
     url: absoluteUrl("/"),
     telephone: site.phoneTel,
-    image: absoluteUrl("/og.png"),
+    image: [absoluteUrl("/logo.jpg"), absoluteUrl("/og.png"), ...gallery.map((item) => absoluteUrl(item.src))],
     currenciesAccepted: "CLP",
+    priceRange: "$$",
     address: {
       "@type": "PostalAddress",
       addressLocality: site.city,
@@ -636,17 +693,41 @@ export function businessJsonLd() {
     sameAs: [site.instagram],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Tratamientos de mirada y piel",
-      itemListElement: services.map((service) => ({
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: service.name,
-          url: absoluteUrl(`/servicios/${service.slug}/`),
-          areaServed: "Ovalle, Coquimbo, Chile",
-          provider: { "@id": businessId },
-        },
-      })),
+      name: "Tratamientos Victoria Rivera Studio",
+      itemListElement: services.flatMap((service) => {
+        if (service.variants?.length) {
+          return service.variants.map((variant) => ({
+            "@type": "Offer",
+            name: variant.name,
+            price: variant.price ?? undefined,
+            priceCurrency: variant.price != null ? "CLP" : undefined,
+            availability: "https://schema.org/InStock",
+            url: absoluteUrl(`/servicios/${service.slug}/`),
+            itemOffered: {
+              "@type": "Service",
+              name: variant.name,
+              areaServed: "Ovalle, Coquimbo, Chile",
+              provider: { "@id": businessId },
+            },
+          }));
+        }
+        return [
+          {
+            "@type": "Offer",
+            name: service.name,
+            price: service.price ?? undefined,
+            priceCurrency: service.price != null ? "CLP" : undefined,
+            availability: "https://schema.org/InStock",
+            url: absoluteUrl(`/servicios/${service.slug}/`),
+            itemOffered: {
+              "@type": "Service",
+              name: service.name,
+              areaServed: "Ovalle, Coquimbo, Chile",
+              provider: { "@id": businessId },
+            },
+          },
+        ];
+      }),
     },
   };
 }

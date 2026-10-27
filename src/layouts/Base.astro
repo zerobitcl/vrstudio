@@ -16,7 +16,7 @@ interface Props {
 const { title, description, waMessage = defaultWa, noindex = false, jsonLd } = Astro.props;
 const canonical = absoluteUrl(Astro.url.pathname);
 const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
-const ogImage = absoluteUrl("/og.png");
+const ogImage = absoluteUrl("/galeria/lash-lifting-coriano-brow-lamination-01.jpg");
 ---
 
 <!doctype html>
@@ -52,7 +52,7 @@ const ogImage = absoluteUrl("/og.png");
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/logo-mark.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <JsonLd data={businessJsonLd()} />
