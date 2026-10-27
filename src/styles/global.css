@@ -412,12 +412,45 @@ main {
   margin: 0 0 1rem;
 }
 
-.facts div {
+.facts div,
+.facts__link {
+  position: relative;
   padding: 1.05rem 1rem;
   border: 1px solid var(--line);
   border-radius: 1.1rem;
   background: rgba(255, 252, 251, 0.72);
   box-shadow: 0 10px 30px rgba(154, 85, 105, 0.05);
+}
+
+.facts__link {
+  display: block;
+  text-decoration: none;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.facts__link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(154, 116, 56, 0.35);
+  box-shadow: 0 14px 34px rgba(154, 85, 105, 0.1);
+}
+
+.facts__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.55rem;
+  border-radius: 999px;
+  color: white;
+}
+
+.facts__icon--ig {
+  background: linear-gradient(135deg, #f58529, #dd2a7b 45%, #8134af);
+}
+
+.facts__icon--wa {
+  background: linear-gradient(135deg, #25d366, #128c7e);
 }
 
 .facts strong {
@@ -429,7 +462,7 @@ main {
   color: var(--gold);
 }
 
-.facts span {
+.facts span:not(.facts__icon) {
   display: block;
   margin-top: 0.3rem;
   color: var(--muted);
