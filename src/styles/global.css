@@ -368,6 +368,7 @@ main {
 
 .gallery {
   display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.8rem;
 }
 
@@ -1012,7 +1013,7 @@ main {
   }
 
   .gallery {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .priceboard {

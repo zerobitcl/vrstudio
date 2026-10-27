@@ -16,7 +16,7 @@ interface Props {
 const { title, description, waMessage = defaultWa, noindex = false, jsonLd } = Astro.props;
 const canonical = absoluteUrl(Astro.url.pathname);
 const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
-const ogImage = absoluteUrl("/galeria/lash-lifting-coriano-brow-lamination-01.jpg");
+const ogImage = absoluteUrl("/galeria/lash-lifting-coriano-01.jpg");
 ---
 
 <!doctype html>

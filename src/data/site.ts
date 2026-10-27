@@ -76,14 +76,28 @@ export const groupLabels: Record<ServiceGroup, string> = {
 
 export const gallery = [
   {
-    src: "/galeria/lash-lifting-coriano-brow-lamination-01.jpg",
-    alt: "Resultado de lash lifting coriano y brow lamination con diseño y tinte en Ovalle",
-    caption: "Lash lifting coriano + brow lamination, diseño y tinte",
+    src: "/galeria/lash-lifting-coriano-01.jpg",
+    alt: "Resultado de lash lifting coriano en Ovalle, Victoria Rivera Studio",
+    caption: "Lash lifting coriano",
+    service: "lash-lifting-ovalle",
   },
   {
-    src: "/galeria/lash-lifting-coriano-brow-lamination-02.jpg",
-    alt: "Mirada con pestaña elevada y ceja laminada en Victoria Rivera Studio Ovalle",
-    caption: "Mirada abierta, ceja definida",
+    src: "/galeria/lash-lifting-coriano-02.jpg",
+    alt: "Mirada con pestaña elevada tras lash lifting coriano en Ovalle",
+    caption: "Lash lifting coriano",
+    service: "lash-lifting-ovalle",
+  },
+  {
+    src: "/galeria/brow-lamination-diseno-tinte-01.jpg",
+    alt: "Brow lamination con diseño de cejas y tinte en Ovalle",
+    caption: "Brow lamination + diseño + tinte",
+    service: "laminado-de-cejas-ovalle",
+  },
+  {
+    src: "/galeria/brow-lamination-diseno-tinte-02.jpg",
+    alt: "Cejas laminadas con diseño y tinte en Victoria Rivera Studio Ovalle",
+    caption: "Brow lamination + diseño + tinte",
+    service: "laminado-de-cejas-ovalle",
   },
 ] as const;
 
@@ -163,7 +177,7 @@ export const services: Service[] = [
       "Lifting tradicional o coriano",
       "Indicaciones de cuidado al salir",
     ],
-    image: "/galeria/lash-lifting-coriano-brow-lamination-01.jpg",
+    image: "/galeria/lash-lifting-coriano-01.jpg",
     blocks: [
       {
         type: "p",
@@ -240,7 +254,7 @@ export const services: Service[] = [
       "Laminado de cejas",
       "Opción con diseño y tinte de regalo",
     ],
-    image: "/galeria/lash-lifting-coriano-brow-lamination-02.jpg",
+    image: "/galeria/brow-lamination-diseno-tinte-01.jpg",
     blocks: [
       {
         type: "p",
