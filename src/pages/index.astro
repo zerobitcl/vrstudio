@@ -240,9 +240,26 @@ let index = 0;
     </div>
   </section>
 
-  <section class="section wrap" id="limari">
+  <section class="section wrap" id="preguntas">
     <div class="section__head">
       <p class="section__index">05</p>
+      <h2>Preguntas <em>antes de agendar</em></h2>
+    </div>
+    <div class="faq">
+      {
+        homeFaqs.map((faq) => (
+          <details>
+            <summary>{faq.q}</summary>
+            <p>{faq.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section wrap" id="limari">
+    <div class="section__head">
+      <p class="section__index">06</p>
       <h2>Ovalle y el <em>Valle del Limarí</em></h2>
       <p>
         La atención es en Ovalle, a unos 90 kilómetros de La Serena. Si vienes desde otra comuna, la hora se deja lista por WhatsApp.
@@ -255,23 +272,6 @@ let index = 0;
             <h3>{area.name}</h3>
             <p>{area.text}</p>
           </article>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="section wrap" id="preguntas">
-    <div class="section__head">
-      <p class="section__index">06</p>
-      <h2>Preguntas <em>antes de agendar</em></h2>
-    </div>
-    <div class="faq">
-      {
-        homeFaqs.map((faq) => (
-          <details>
-            <summary>{faq.q}</summary>
-            <p>{faq.a}</p>
-          </details>
         ))
       }
     </div>
