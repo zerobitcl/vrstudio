@@ -21,18 +21,24 @@ const paths = [
     text: "Tradicional o coriano, sobre tu pestaña.",
     points: ["Desde $20.000", "Coriano con color $30.000", "Sin extensiones"],
     href: "/servicios/lash-lifting-ovalle/",
+    tone: "rose",
+    n: "01",
   },
   {
     title: "Brow lamination",
     text: "Cejas ordenadas, con o sin diseño.",
     points: ["Desde $20.000", "Con diseño $25.000", "Tinte de regalo en el pack"],
     href: "/servicios/laminado-de-cejas-ovalle/",
+    tone: "gold",
+    n: "02",
   },
   {
     title: "Limpieza facial",
     text: "Express o profunda, según tu piel.",
     points: ["Express $25.000", "Profunda $30.000", "Protocolo de estudio"],
     href: "/servicios/limpieza-facial-ovalle/",
+    tone: "blush",
+    n: "03",
   },
 ];
 
@@ -79,16 +85,16 @@ let index = 0;
   <section class="wrap" aria-label="Datos del estudio">
     <div class="facts">
       <div>
-        <strong>Precios claros</strong>
-        <span>Publicados en la web, sin inventar valores.</span>
+        <strong>Precios a la vista</strong>
+        <span>Lista publicada, para agendar con tranquilidad.</span>
       </div>
       <div>
         <strong>Ovalle</strong>
         <span>Valle del Limarí, Región de Coquimbo.</span>
       </div>
       <div>
-        <strong>Logo VR</strong>
-        <span>Victoria Rivera Studio Oficial.</span>
+        <strong>Atención personal</strong>
+        <span>Victoria Rivera Studio · @vr.studio_oficial</span>
       </div>
       <div>
         <strong>WhatsApp</strong>
@@ -106,7 +112,8 @@ let index = 0;
     <div class="choice">
       {
         paths.map((path) => (
-          <article>
+          <article class={`choice__card choice__card--${path.tone}`}>
+            <span class="choice__n" aria-hidden="true">{path.n}</span>
             <h3>{path.title}</h3>
             <p>{path.text}</p>
             <ul>

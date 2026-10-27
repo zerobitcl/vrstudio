@@ -460,24 +460,44 @@ main {
 
 .choice {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.95rem;
 }
 
-.choice article {
+.choice__card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
   min-height: 100%;
-  padding: 1.4rem;
-  border: 1px solid var(--line);
-  border-radius: 1.35rem;
-  background:
-    linear-gradient(165deg, rgba(255, 252, 251, 0.95), rgba(248, 233, 228, 0.55));
+  padding: 1.55rem 1.4rem 1.4rem;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 1.45rem;
   box-shadow: var(--shadow);
 }
 
+.choice__card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+}
+
+.choice__n {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
 .choice h3 {
-  font-size: 2rem;
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.55rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
 }
 
 .choice p,
@@ -493,6 +513,57 @@ main {
 .choice .btn {
   margin-top: auto;
   align-self: flex-start;
+}
+
+.choice__card--rose {
+  border-color: rgba(217, 137, 156, 0.28);
+  background:
+    radial-gradient(280px 160px at 100% 0%, rgba(244, 201, 212, 0.85), transparent 70%),
+    linear-gradient(165deg, #fffaf8, #f8e4ea);
+}
+
+.choice__card--rose::before,
+.choice__card--rose .choice__n,
+.choice__card--rose h3 {
+  color: #b85f78;
+}
+
+.choice__card--rose::before {
+  background: linear-gradient(180deg, #e8a8b8, #b85f78);
+}
+
+.choice__card--gold {
+  border-color: rgba(154, 116, 56, 0.28);
+  background:
+    radial-gradient(280px 160px at 100% 0%, rgba(232, 212, 168, 0.9), transparent 70%),
+    linear-gradient(165deg, #fffcf7, #f4e8d2);
+}
+
+.choice__card--gold::before,
+.choice__card--gold .choice__n,
+.choice__card--gold h3 {
+  color: #9a7438;
+}
+
+.choice__card--gold::before {
+  background: linear-gradient(180deg, #e8d4a8, #9a7438);
+}
+
+.choice__card--blush {
+  border-color: rgba(232, 168, 184, 0.35);
+  background:
+    radial-gradient(280px 160px at 100% 0%, rgba(248, 233, 228, 0.95), transparent 70%),
+    linear-gradient(165deg, #fff9f7, #f3d5d0);
+}
+
+.choice__card--blush::before,
+.choice__card--blush .choice__n,
+.choice__card--blush h3 {
+  color: #c06b62;
+}
+
+.choice__card--blush::before {
+  background: linear-gradient(180deg, #f0c0b8, #c06b62);
 }
 
 .menu {
@@ -529,8 +600,10 @@ main {
 .row__name {
   display: block;
   font-family: var(--serif);
-  font-size: clamp(1.7rem, 3vw, 2.25rem);
+  font-size: clamp(1.85rem, 3.2vw, 2.45rem);
   line-height: 1;
+  color: var(--ink);
+  transition: color 160ms ease, font-style 160ms ease;
 }
 
 .row__desc {
